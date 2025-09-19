@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
       "https://docs.google.com/spreadsheets/d/e/2PACX-1vSWhQaUXvJI7UjcNVNrpkNTjPOA_b2sQqCBWp1KT_Nw3cB6Ch5bwUw2lfKQPiokj1ZbliIOdRC0cYIR/pub?output=csv",
     
     // ★★★★★ เพิ่มลิงก์ Instagram ของคุณที่นี่ ★★★★★
-    instagramUrl: "https://www.instagram.com/your_username_here",
+    instagramUrl: "https://www.instagram.com/officialmkf_",
 
     // --- 2. การแสดงผลรายชื่อ (Member Display) ---
     columnsPerRow: 3,
