@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // --- Global variables ---
   let allMembersData = [];
   let currentPage = 1;
+  let currentDisplay = 'Oreo'; // เพิ่มตัวแปรสถานะการแสดงผล
   
   // --- DOM Elements ---
   const landingPage = document.getElementById("landing-page");
@@ -47,11 +48,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const nextBtn = document.getElementById("nextBtn");
   const pageInfo = document.getElementById("pageInfo");
   const paginationControls = document.querySelector(".pagination-controls");
-  const instagramLink = document.getElementById("instagram-link"); // ★ เพิ่มมาใหม่
+  const instagramLink = document.getElementById("instagram-link");
+  const showOreoBtn = document.getElementById("showOreoBtn");
+  const showBxngbxngBtn = document.getElementById("showBxngbxngBtn");
 
   // --- Functions ---
-
-  // ★★★★★ เพิ่มโค้ดส่วนนี้เพื่อตั้งค่าลิงก์ Instagram ★★★★★
   function setupExternalLinks() {
     if (instagramLink && config.instagramUrl) {
       instagramLink.href = config.instagramUrl;
@@ -112,16 +113,15 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateView() {
     const filterText = searchInput.value.toLowerCase();
     
-    const filteredData = filterText
-      ? allMembersData.filter(member => member.name.toLowerCase().includes(filterText))
-      : allMembersData;
-    
-    leaderContainer.innerHTML = "";
-    membersContainer.innerHTML = "";
-
+    // ตรวจสอบว่ากำลังค้นหาอยู่หรือไม่
     if (filterText) {
-      leaderContainer.style.display = "none";
-      membersContainer.style.display = "flex";
+      // โหมดค้นหา: แสดงผลการค้นหาทั้งหมดโดยแบ่งหน้า
+      const filteredData = allMembersData.filter(member => member.name.toLowerCase().includes(filterText));
+      
+      leaderContainer.innerHTML = "";
+      membersContainer.innerHTML = "";
+      showOreoBtn.style.display = "none";
+      showBxngbxngBtn.style.display = "none";
 
       const totalPages = Math.ceil(filteredData.length / config.itemsPerPage);
       const startIndex = (currentPage - 1) * config.itemsPerPage;
@@ -138,24 +138,26 @@ document.addEventListener("DOMContentLoaded", () => {
       updatePaginationControls(totalPages);
 
     } else {
-      leaderContainer.style.display = "flex";
-      membersContainer.style.display = "flex";
+      // โหมดปกติ: แสดงกลุ่มตามปุ่มที่ถูกเลือก
+      showOreoBtn.style.display = "inline-block";
+      showBxngbxngBtn.style.display = "inline-block";
 
-      const leaders = filteredData.filter(m => m.role.toLowerCase() === config.leaderSectionTitle.toLowerCase());
-      const members = filteredData.filter(m => m.role.toLowerCase() === config.memberSectionTitle.toLowerCase());
+      leaderContainer.innerHTML = "";
+      membersContainer.innerHTML = "";
 
-      if (leaders.length > 0) {
-        leaderContainer.innerHTML = `<h2>${config.leaderSectionTitle}</h2>` + leaders.map(l => createMemberCardHTML(l, true)).join("");
+      if (currentDisplay === 'Oreo') {
+          const oreoMembers = allMembersData.filter(m => m.role.toLowerCase() === config.leaderSectionTitle.toLowerCase());
+          leaderContainer.innerHTML = `<h2>${config.leaderIcon} ${config.leaderSectionTitle}</h2>` + oreoMembers.map(l => createMemberCardHTML(l, true)).join("");
+          paginationControls.style.display = "none";
+      } else if (currentDisplay === 'Bxngbxng') {
+          const bxngbxngMembers = allMembersData.filter(m => m.role.toLowerCase() === config.memberSectionTitle.toLowerCase());
+          const totalPages = Math.ceil(bxngbxngMembers.length / config.itemsPerPage);
+          const startIndex = (currentPage - 1) * config.itemsPerPage;
+          const paginatedMembers = bxngbxngMembers.slice(startIndex, startIndex + config.itemsPerPage);
+          
+          membersContainer.innerHTML = `<h2>${config.memberIcon} ${config.memberSectionTitle}</h2>` + paginatedMembers.map(m => createMemberCardHTML(m, false)).join("");
+          updatePaginationControls(totalPages);
       }
-
-      const totalPages = Math.ceil(members.length / config.itemsPerPage);
-      const startIndex = (currentPage - 1) * config.itemsPerPage;
-      const paginatedMembers = members.slice(startIndex, startIndex + config.itemsPerPage);
-      
-      if (paginatedMembers.length > 0) {
-          membersContainer.innerHTML = `<h2>${config.memberSectionTitle}</h2>` + paginatedMembers.map(m => createMemberCardHTML(m, false)).join("");
-      }
-      updatePaginationControls(totalPages);
     }
   }
   
@@ -195,7 +197,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     nextBtn.addEventListener("click", () => {
       const filterText = searchInput.value.toLowerCase();
-      const dataSet = filterText ? allMembersData.filter(m => m.name.toLowerCase().includes(filterText)) : allMembersData.filter(m => m.role.toLowerCase() === config.memberSectionTitle.toLowerCase());
+      // คำนวณจำนวนหน้าตามโหมดปัจจุบัน
+      let dataSet;
+      if (filterText) {
+          dataSet = allMembersData.filter(m => m.name.toLowerCase().includes(filterText));
+      } else if (currentDisplay === 'Bxngbxng') {
+          dataSet = allMembersData.filter(m => m.role.toLowerCase() === config.memberSectionTitle.toLowerCase());
+      }
+      
       const totalPages = Math.ceil(dataSet.length / config.itemsPerPage);
 
       if (currentPage < totalPages) {
@@ -225,6 +234,23 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         fetchAndDisplayMembers();
       }, config.transition_speed);
+    });
+    
+    // เพิ่ม Event Listener สำหรับปุ่มใหม่
+    showOreoBtn.addEventListener("click", () => {
+        currentDisplay = 'Oreo';
+        currentPage = 1;
+        updateView();
+        showOreoBtn.classList.add("active");
+        showBxngbxngBtn.classList.remove("active");
+    });
+
+    showBxngbxngBtn.addEventListener("click", () => {
+        currentDisplay = 'Bxngbxng';
+        currentPage = 1;
+        updateView();
+        showBxngbxngBtn.classList.add("active");
+        showOreoBtn.classList.remove("active");
     });
   }
 
@@ -257,5 +283,5 @@ document.addEventListener("DOMContentLoaded", () => {
   document.documentElement.style.setProperty('--columns-per-row', config.columnsPerRow);
   setupAudioPlayer();
   setupEventListeners();
-  setupExternalLinks(); // ★ เพิ่มมาใหม่
+  setupExternalLinks();
 });

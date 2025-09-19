@@ -128,13 +128,39 @@ header .logo {
 }
 /* ★★★★★ จบส่วนแก้ไข ★★★★★ */
 
-.header-title h1 { font-size: 2rem; }
-.header-title p { color: var(--color-secondary); text-transform: uppercase; }
 .search-section { margin-bottom: 3rem; }
 .search-container { position: relative; max-width: 500px; margin: 0 auto; }
 .search-icon { position: absolute; top: 50%; left: 1.5rem; transform: translateY(-50%); color: #8a8a8a; }
 #searchInput { width: 100%; padding: 1rem 1rem 1rem 3.5rem; border-radius: var(--card-radius); color: var(--color-foreground); font-size: 1rem; background-color: rgba(42, 42, 42, 0.8); border: 2px solid var(--color-border); transition: all 0.2s ease; }
 #searchInput:focus { outline: none; border-color: #d4d4d4; box-shadow: 0 0 15px rgba(200, 200, 200, 0.3); }
+
+/* เพิ่มส่วนนี้สำหรับปุ่มกรอง */
+.filter-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+.filter-btn {
+    padding: 0.8rem 2rem;
+    border-radius: var(--card-radius);
+    background-color: rgba(42, 42, 42, 0.8);
+    border: 2px solid var(--color-border);
+    color: var(--color-foreground);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.filter-btn:hover {
+    border-color: #d4d4d4;
+    box-shadow: 0 0 15px rgba(200, 200, 200, 0.3);
+}
+.filter-btn.active {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-primary-foreground);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
 
 /* --- 5. Member Sections --- */
 .member-section {
