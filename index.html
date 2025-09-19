@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oreo & Bxngbxng</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="landing-page">
+        <div class="landing-content">
+            <div class="logo-container">
+                <img src="https://img5.pic.in.th/file/secure-sv1/1e218d34137e178a5.png" alt="Oreo & Bxngbxng Logo" class="logo">
+            </div>
+            <div class="landing-text">
+                <h1>Oreo & Bxngbxng</h1>
+                <p class="subtitle">Oc One Hundred Per</p>
+            </div>
+            
+            <div class="button-group">
+                <button id="enter-btn" class="enter-button members-button">
+                    <span>Members</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+                <a href="#" id="instagram-link" class="enter-button instagram-button" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-instagram"></i>
+                    <span>Instagram</span>
+                </a>
+            </div>
+            </div>
+        <footer>
+            <p>Designed by Oreo & Bxngbxng © 2025</p>
+        </footer>
+    </div>
+    
+    <div id="members-page">
+        <div class="container">
+            <header>
+                <div class="header-content">
+                    <img src="https://img5.pic.in.th/file/secure-sv1/1e218d34137e178a5.png" alt="Oreo & Bxngbxng Logo" class="logo">
+                    <div class="header-title">
+                        <h1>Oreo & Bxngbxng</h1>
+                        <p>Member Directory</p>
+                    </div>
+                </div>
+            </header>
+            <main>
+                <div class="search-section">
+                    <div class="search-container">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="searchInput" placeholder="Search member name...">
+                    </div>
+                </div>
+
+                <section class="member-section" id="leader-section">
+                </section>
+
+                <section class="member-section" id="members-section">
+                    <div id="loading-message" class="loading-container">
+                        <div class="loading-spinner"></div>
+                        <p>Loading members...</p>
+                    </div>
+                </section>
+
+                <div class="pagination-controls">
+                    <button id="prevBtn" class="pagination-btn">
+                        <i class="fas fa-chevron-left"></i>
+                        <span>Previous</span>
+                    </button>
+                    <div class="page-info">
+                        <span id="pageInfo"></span>
+                    </div>
+                    <button id="nextBtn" class="pagination-btn">
+                        <span>Next</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </main>
+        </div>
+        <footer>
+            <p>Designed by Oreo & Bxngbxng © 2025</p>
+        </footer>
+        
+        <div id="audio-player-container">
+            <div class="audio-controls">
+                <button id="play-pause-btn" class="audio-btn primary">
+                    <i class="fas fa-play"></i>
+                </button>
+                <div class="audio-info">
+                    <span class="audio-label">Background Music</span>
+                </div>
+                <div class="volume-control">
+                    <button id="mute-btn" class="audio-btn">
+                        <i class="fas fa-volume-high"></i>
+                    </button>
+                    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.1">
+                </div>
+            </div>
+            <audio id="gang-music" src="https://files.catbox.moe/x3wfx5.mp3" preload="auto" loop></audio>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
