@@ -14,11 +14,13 @@
   --color-secondary: #a3a3a3;
   --color-border: rgba(255, 255, 255, 0.15);
   --color-border-subtle: rgba(255, 255, 255, 0.1);
+  --color-glow-blue: rgba(0, 198, 255, 0.7);
+  --color-glow-yellow: rgba(255, 215, 0, 0.7);
 
   /* --- 📇 Member Card Settings --- */
-  --card-background: rgba(50, 45, 35, 0.7);
-  --card-background-hover: rgba(60, 55, 45, 0.8);
-  --card-accent-border-color: rgba(255, 255, 255, 0.7);
+  --card-background: rgba(30, 30, 30, 0.4);
+  --card-background-hover: rgba(40, 40, 40, 0.5);
+  --card-accent-border-color: rgba(0, 198, 255, 0.7);
   --card-leader-accent-border-color: rgba(255, 215, 0, 0.8);
   --card-padding: 0.75rem 1rem;
   --card-radius: 8px;
@@ -51,6 +53,26 @@
 @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
 body { font-family: var(--font-body); color: var(--color-foreground); line-height: 1.6; background: linear-gradient(-45deg, #000000, #0a0a0a, #1a1a1a, #2a2a2a); background-size: 400% 400%; animation: aurora 18s ease infinite; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+/* เพิ่มพื้นหลัง Grid แบบโฮโลแกรม */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(0deg, rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 50px 50px;
+  z-index: -1;
+  animation: pan-grid 60s linear infinite;
+  opacity: 0.5;
+  pointer-events: none;
+}
+@keyframes pan-grid {
+    from { background-position: 0 0; }
+    to { background-position: -500px -500px; }
+}
 
 /* --- 3. หน้า Landing Page --- */
 #landing-page { display: flex; flex-direction: column; align-items: center; justify-content: space-between; min-height: 100vh; padding: 2rem; animation: fadeIn 1.2s ease-out; }
@@ -99,7 +121,7 @@ body { font-family: var(--font-body); color: var(--color-foreground); line-heigh
 .members-button:hover {
   background: transparent;
   color: var(--color-primary);
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
   transform: translateY(-2px);
 }
 .instagram-button {
@@ -112,15 +134,95 @@ body { font-family: var(--font-body); color: var(--color-foreground); line-heigh
 .instagram-button:hover {
   background: transparent;
   color: var(--color-primary);
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
   transform: translateY(-2px);
+}
+
+/* Loading Screen (ใหม่) */
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.loading-content {
+    text-align: center;
+    width: 80%;
+    max-width: 500px;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 30px rgba(0, 200, 255, 0.3);
+}
+.loading-text p {
+    font-family: var(--font-heading);
+    color: var(--color-primary);
+    font-size: 1.5rem;
+    animation: pulse 1.5s infinite;
+}
+.loading-bar {
+    width: 100%;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    margin-top: 1rem;
+    border-radius: 5px;
+    overflow: hidden;
+}
+.loading-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00c6ff, #0072ff);
+    width: 0%;
+    animation: fill-bar 3s forwards cubic-bezier(0.1, 0.8, 0.6, 1);
+}
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+@keyframes fill-bar {
+    to { width: 100%; }
 }
 
 /* --- 4. หน้า Members Page --- */
 #members-page { display: none; min-height: 100vh; padding: 2rem 0; animation: fadeIn 0.8s ease-out; }
 .container { max-width: var(--container-max-width); margin: 0 auto; padding: 0 1.5rem; }
-header { margin-bottom: 3rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--color-border-subtle); text-align: center; }
+header { margin-bottom: 3rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--color-border-subtle); text-align: center; position: relative; } /* เพิ่ม position: relative; */
 .header-content { display: flex; flex-direction: column; align-items: center; gap: 1.5rem; }
+
+/* เพิ่มปุ่มกลับหน้าหลัก */
+.home-btn {
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: var(--card-radius);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    background: rgba(42, 42, 42, 0.8);
+    border: 2px solid var(--color-border);
+    color: var(--color-foreground);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+.home-btn:hover {
+    background: var(--color-primary);
+    color: var(--color-primary-foreground);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
 
 /* ★★★★★ ปรับขนาดโลโก้ในหน้า Members ที่นี่ ★★★★★ */
 header .logo {
@@ -162,7 +264,7 @@ header .logo {
     box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
 }
 
-/* --- 5. Member Sections --- */
+/* --- 5. Member Sections (ปรับปรุงใหม่) --- */
 .member-section {
   margin-bottom: 3rem;
   display: flex;
@@ -192,21 +294,44 @@ header .logo {
   padding: var(--card-padding);
   border-radius: var(--card-radius);
   background: var(--card-background);
-  border-left: var(--card-accent-border-width) solid var(--card-accent-border-color);
+  border-left: none; /* ลบเส้นกรอบเดิม */
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
   flex: 0 1 calc((100% / var(--columns-per-row, 3)) - var(--card-gap));
   min-width: var(--card-min-width);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
 }
-.member-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-  background: var(--card-background-hover);
+/* เพิ่มเส้นขอบแบบเรืองแสง */
+.member-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: var(--card-radius);
+    padding: var(--card-accent-border-width);
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    z-index: -1;
+    transition: all 0.3s ease;
 }
-.leader-card {
-    border-left-color: var(--card-leader-accent-border-color);
+.member-card:hover::before {
+    background: linear-gradient(135deg, #00f2fe, #4facfe);
+    box-shadow: 0 0 20px #4facfe;
+}
+.leader-card::before {
+    background: linear-gradient(135deg, #ff9900, #ffc800);
+}
+.leader-card:hover::before {
+    background: linear-gradient(135deg, #ffb300, #ffec00);
+    box-shadow: 0 0 20px #ffb300;
 }
 .member-card .profile-pic {
   width: var(--profile-pic-size);

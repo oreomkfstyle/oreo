@@ -51,6 +51,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const instagramLink = document.getElementById("instagram-link");
   const showOreoBtn = document.getElementById("showOreoBtn");
   const showBxngbxngBtn = document.getElementById("showBxngbxngBtn");
+  const loadingScreen = document.getElementById("loading-screen");
+  const homeBtn = document.getElementById("homeBtn"); // เพิ่มปุ่มกลับหน้าหลัก
 
   // --- Functions ---
   function setupExternalLinks() {
@@ -221,18 +223,58 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     
     enterBtn.addEventListener("click", () => {
+      // Fade out landing page
       landingPage.style.animation = `fadeOut ${config.transition_speed / 1000}s forwards`;
+      
+      // Show loading screen
+      loadingScreen.style.display = "flex";
+      loadingScreen.style.animation = "fadeIn 1s forwards";
+
+      // Set a timeout to transition to the members page
       setTimeout(() => {
         landingPage.style.display = "none";
         membersPage.style.display = "block";
         membersPage.style.animation = "fadeIn 1s forwards";
+        
+        // Hide loading screen after the member page loads
+        loadingScreen.style.animation = "fadeOut 1s forwards";
+        setTimeout(() => {
+            loadingScreen.style.display = "none";
+        }, 1000);
 
+        // Play audio
         const audio = document.getElementById("gang-music");
         const playPromise = audio.play();
         if (playPromise !== undefined) {
           playPromise.catch((error) => console.error("Autoplay was prevented:", error));
         }
+
+        // Fetch and display data
         fetchAndDisplayMembers();
+      }, config.transition_speed);
+    });
+
+    // Event Listener สำหรับปุ่มกลับหน้าหลัก
+    homeBtn.addEventListener("click", () => {
+      membersPage.style.animation = `fadeOut ${config.transition_speed / 1000}s forwards`;
+      setTimeout(() => {
+        membersPage.style.display = "none";
+        landingPage.style.display = "flex";
+        landingPage.style.animation = "fadeIn 1s forwards";
+        
+        // Stop audio
+        const audio = document.getElementById("gang-music");
+        audio.pause();
+        audio.currentTime = 0;
+
+        // Reset state
+        searchInput.value = "";
+        currentDisplay = 'Oreo';
+        currentPage = 1;
+        showOreoBtn.classList.add("active");
+        showBxngbxngBtn.classList.remove("active");
+        updateView();
+
       }, config.transition_speed);
     });
     
